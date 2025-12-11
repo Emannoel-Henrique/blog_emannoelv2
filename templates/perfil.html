@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+{% with mensagens = get_flashed_messages() %}
+  {% if mensagens %}
+    <div class="mensagens-flash">
+      {% for msg in mensagens %}
+        <div class="alerta alerta-sucesso">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<div id="perfil">
+    <form class="form_perfil" action="/perfil" method="POST" enctype="multipart/form-data">
+    <img src="../static/uploads/{{ foto if foto else 'default.jpg' }}" class="foto_perfil" alt="Foto de perfil">
+    <h2>Olá, {{ nome }}</h2>
+    <hr>
+    <h3>Alterar dados:</h3>
+
+    
+        <label>Nome do usuário:</label>
+        <input type="text" name="nome" value="{{ nome }}" required>
+        
+        <label>User:</label>
+        <input type="text" name="user" value="{{ username }}" required>
+        
+        <label>Foto:</label>
+        <input type="file" name="foto" accept=".jpg,.png,.webp,.jfif">
+        
+        <a href="/usuario/novasenha"><button type="button">Alterar senha</button></a>
+
+        <button type="submit">Salvar alterações</button>
+    </form>
+</div>
+{% endblock %}

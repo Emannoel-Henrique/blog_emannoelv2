@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina inicial</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-content">
+                <img src="../static/img/issac.gif">
+                <h1>-The blog of isaac</h1>
+            </div>
+            
+            <div class="botoes-header">
+    <!-- DEBUG: Mostrar se é admin -->
+    <small style="color: yellow;">Admin: {{ 'SIM' if session.get('admin') else 'NÃO' }}</small>
+    
+    {% if 'username' in session or 'admin' in session %}
+        <a href="/" class="btn-header">HOME</a>
+        
+        {% if session.get('admin') %}
+        <a href="/dashboard" class="btn-header">Área ADM</a>
+        {% endif %}
+        {% if 'username' in session %}
+        <a href="/perfil" class="btn-header">Perfil</a>
+        {% endif %}
+        <a href="/logout" class="btn-header sair">Sair</a>
+    {% else %}
+        <a href="/login" class="btn-header">Login</a>
+    {% endif %}
+</div>
+        </div>
+    </header>
+    
+    <main>
+        {% block conteudo %}{% endblock %}
+    </main>
+    
+    <footer>
+        <p>Meu Blog - Feito com Flask</p>
+    </footer>
+
+
+
+
+
+</body>
+<div id="transition-blocks"></div>
+
+
+</html>

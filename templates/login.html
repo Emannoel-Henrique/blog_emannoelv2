@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+{% with mensagens = get_flashed_messages() %}
+  {% if mensagens %}
+    <div class="mensagens-flash">
+      {% for msg in mensagens %}
+        <div class="alerta alerta-erro">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<div id="login">
+    <form class="form-login" action="/login" method="POST">
+        <h2>Faça seu login no Blog</h2>
+        <input type="text" name="user" placeholder="Usuário" autocomplete="off" required>  
+        <input type="password" name="senha" placeholder="Senha" autocomplete="off" required> 
+        <p>Não tem cadastro? <a href="/cadastro">Faça o seu cadastro</a>.</p>
+        <a href="/index"><button type="submit">Acessar</button></a> 
+    </form>
+</div>
+
+{% endblock %}
+
+
+
+
+<!--    
+<form action="" method="post" id="form-cadastro">
+<label class="text_color">Nome:</label><br>
+                <input type="text" name="nome" id="nome" placeholder="DIgite seu Nome" required>
+                <br><label class="text_color">Celular:</label><br>
+                <input type="text" name="nome" id="nome" placeholder="DIgite seu número de telefone" required>
+                <br><label class="text_color">E-mail:</label><br>
+                <input type="text" name="nome" id="nome" placeholder="DIgite o E-mail" required>
+               
+    
+                <br><input type="submit" value="AGENDAR UMA DEMONSTRAÇÃO" class="btEnviar"></input><br> 
+                </form>          -->

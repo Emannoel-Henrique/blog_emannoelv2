@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+{% with mensagens = get_flashed_messages() %}
+  {% if mensagens %}
+    <div class="mensagens-flash">
+      {% for msg in mensagens %}
+        <div class="alerta alerta-info">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<div id="dashboard">
+    <div id="dados">
+        <h2>Painel ADM</h2>
+        <p>Bem-vindo, MR senhor fodão administrador!</p>
+    </div>
+    <div id="info">
+        <div class="col-info">
+            <h3>Usuários Cadastrados {{ usuarios|length }}</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ações</th>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Username</th>
+                        <th>Senha</th>
+                        <th>Data de cadastro</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for usuario in usuarios %}
+                <tr {% if usuario.ativo <= 0 %}class="usuario-banido" data-banido="true"{% endif %}>
+                    <td>
+                        <a href="/usuario/excluir/{{usuario.idUsuario}}" class="btn-excluir">Excluir</a>
+                    </td>
+                    <td>{{usuario.idUsuario}}</td>
+                    <td>{{usuario.nome}}</td>
+                    <td>{{usuario.username}}</td>
+                    <td> <a href="/usuario/reset/{{ usuario.idUsuario }}"> <button class="btn-resetar">Resetar senha</button> </a></td>
+                    <td>{{usuario.dataCadastro.strftime('%d/%m/%Y')}}</td>
+                    <td>
+                        <a href="/usuario/status/{{ usuario.idUsuario }}">
+                            <button class="btn-status {% if usuario.ativo %}banir{% else %}ativar{% endif %}">
+                                {% if usuario.ativo %} Banir {% else %} Ativar {% endif %}
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7">Nenhum usuário cadastrado!</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="col-info">
+            <h3>Posts</h3>
+            <div class="posts-container">
+                {% for post in posts %}
+                <div class="post-card">
+                    <div class="post-header">
+                        <span class="post-id">#{{ post.idPost }}</span>
+                        <h4 class="post-titulo">{{ post.titulo }}</h4>
+                    </div>
+                    <div class="post-content">
+                        <p>{{ post.conteudo | truncate(50) }}</p>
+                    </div>
+                    <div class="post-actions">
+                        <form action="/delete/{{ post.idPost }}" method="POST" class="form-excluir">
+                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este post?')" class="btn-excluir-post">
+                                🗑️ Excluir
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% else %}
+                <div class="no-posts">
+                    <p>📝 Nenhum post publicado</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>  
+    </div>
+</div>
+
+<script>
+// Animar linhas de usuários banidos
+document.addEventListener('DOMContentLoaded', function() {
+    const linhasBanidas = document.querySelectorAll('tr[data-banido="true"]');
+    
+    linhasBanidas.forEach((linha, index) => {
+        // Delay para cada linha
+        setTimeout(() => {
+            linha.classList.add('animar-risco');
+        }, index * 200);
+    });
+});
+</script>
+
+{% endblock %}
